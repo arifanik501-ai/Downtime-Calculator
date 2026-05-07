@@ -6,10 +6,46 @@ const runtimeButtons = Array.from(document.querySelectorAll(".runtime-pill"));
 const resultCard = document.querySelector("#result-card");
 const resultNumber = document.querySelector("#result-number");
 const formulaText = document.querySelector("#formula");
+const smoothToggle = document.querySelector("#smooth-toggle");
 
 const FIXED_DOWNTIME = 30;
+const SMOOTH_MODE_KEY = "dc-smooth-mode";
 let selectedRuntime = 480;
 let loadingTimer;
+
+const setSmoothMode = (enabled, { persist = true } = {}) => {
+  document.body.classList.toggle("smooth-mode", enabled);
+  if (smoothToggle) {
+    smoothToggle.setAttribute("aria-checked", enabled.toString());
+  }
+  if (persist) {
+    try {
+      localStorage.setItem(SMOOTH_MODE_KEY, enabled ? "1" : "0");
+    } catch (_error) {
+      // localStorage may be unavailable (private mode); fail silently.
+    }
+  }
+};
+
+const initSmoothMode = () => {
+  let stored = null;
+  try {
+    stored = localStorage.getItem(SMOOTH_MODE_KEY);
+  } catch (_error) {
+    stored = null;
+  }
+  setSmoothMode(stored === "1", { persist: false });
+};
+
+initSmoothMode();
+
+if (smoothToggle) {
+  smoothToggle.addEventListener("click", () => {
+    const next = !document.body.classList.contains("smooth-mode");
+    vibrate();
+    setSmoothMode(next);
+  });
+}
 
 const vibrate = (duration = 12) => {
   if ("vibrate" in navigator) {

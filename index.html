@@ -62,6 +62,32 @@
           <h1>Downtime <em>Calculator</em></h1>
         </div>
       </div>
+
+      <button
+        type="button"
+        class="smooth-toggle"
+        id="smooth-toggle"
+        role="switch"
+        aria-checked="false"
+        aria-label="Smooth mode (reduce animations and effects to boost performance)"
+        title="Smooth mode — boost performance"
+      >
+        <span class="smooth-toggle-track" aria-hidden="true">
+          <span class="smooth-toggle-icon smooth-toggle-icon-spark">
+            <svg viewBox="0 0 16 16" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 1.5l1.6 4.1 4.4.4-3.4 2.9 1 4.3-3.6-2.4-3.6 2.4 1-4.3-3.4-2.9 4.4-.4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="smooth-toggle-thumb" aria-hidden="true"></span>
+          <span class="smooth-toggle-icon smooth-toggle-icon-leaf">
+            <svg viewBox="0 0 16 16" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 13.5C3 7 7 3 13.5 2.5 13 9 9 13 2.5 13.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M2.5 13.5l6-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </span>
+        <span class="smooth-toggle-label" aria-hidden="true">Smooth</span>
+      </button>
     </header>
 
     <main class="content" aria-live="polite">
