@@ -1031,6 +1031,326 @@ input:focus {
   animation: count-pop 0.5s var(--ease-out-back);
 }
 
+/* ========== Install banner / iOS hint ========== */
+.install-banner {
+  position: relative;
+  z-index: 9;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 18px 0;
+  padding: 12px 14px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.78)) padding-box,
+    linear-gradient(135deg, rgba(118, 81, 217, 0.55), rgba(255, 126, 181, 0.55)) border-box;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  box-shadow:
+    0 16px 36px rgba(94, 76, 166, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transform: translateY(-12px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.32s cubic-bezier(0.2, 0.7, 0.3, 1),
+    opacity 0.32s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.install-banner[data-state="visible"] {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.install-banner-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #5e7df4, #7651d9 55%, #ff7eb5);
+  border-radius: 12px;
+  box-shadow:
+    0 8px 18px rgba(118, 81, 217, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.install-banner-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.install-banner-title {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink, #28214f);
+}
+
+.install-banner-title em {
+  font-family: "Times New Roman", "Times", serif;
+  font-style: italic;
+  font-weight: 600;
+  background: linear-gradient(135deg, #5e7df4, #7651d9 50%, #ff7eb5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.install-banner-desc {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(40, 33, 79, 0.7);
+  line-height: 1.35;
+}
+
+.install-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: linear-gradient(135deg, #5e7df4, #7651d9 55%, #ff7eb5);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  box-shadow:
+    0 10px 22px rgba(94, 125, 244, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition:
+    transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.22s cubic-bezier(0.2, 0.7, 0.3, 1),
+    filter 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.install-banner-cta:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 28px rgba(94, 125, 244, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.install-banner-cta:active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+}
+
+.install-banner-cta:focus-visible {
+  outline: 2px solid rgba(118, 81, 217, 0.85);
+  outline-offset: 3px;
+}
+
+.install-banner-dismiss {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: rgba(40, 33, 79, 0.55);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.install-banner-dismiss:hover {
+  color: var(--ink, #28214f);
+  background: #ffffff;
+  transform: scale(1.05);
+}
+
+.install-banner-dismiss:focus-visible {
+  outline: 2px solid rgba(118, 81, 217, 0.85);
+  outline-offset: 2px;
+}
+
+.install-banner.is-success .install-banner-cta {
+  background: linear-gradient(135deg, #4cd29a, #2fb37c);
+  box-shadow:
+    0 10px 22px rgba(47, 179, 124, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.ios-install-hint {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  z-index: 30;
+  padding: 16px 18px 14px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.86)) padding-box,
+    linear-gradient(160deg, rgba(118, 81, 217, 0.55), rgba(255, 126, 181, 0.55)) border-box;
+  border: 1px solid transparent;
+  border-radius: 22px;
+  box-shadow:
+    0 24px 60px rgba(40, 33, 79, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.32s cubic-bezier(0.2, 0.7, 0.3, 1),
+    opacity 0.32s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.ios-install-hint[data-state="visible"] {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ios-install-hint::after {
+  content: "";
+  position: absolute;
+  right: 26px;
+  bottom: -10px;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.86));
+  border-right: 1px solid rgba(255, 126, 181, 0.45);
+  border-bottom: 1px solid rgba(255, 126, 181, 0.45);
+  border-bottom-right-radius: 6px;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.ios-install-hint-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  color: rgba(40, 33, 79, 0.55);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ios-install-hint-close:hover {
+  color: var(--ink, #28214f);
+  background: #ffffff;
+  transform: scale(1.05);
+}
+
+.ios-install-hint-close:focus-visible {
+  outline: 2px solid rgba(118, 81, 217, 0.85);
+  outline-offset: 2px;
+}
+
+.ios-install-hint-title {
+  margin: 0 0 10px;
+  font-family: "Times New Roman", "Times", serif;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink, #28214f);
+}
+
+.ios-install-hint-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ios-install-hint-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(40, 33, 79, 0.85);
+  line-height: 1.4;
+}
+
+.ios-install-hint-steps strong {
+  font-weight: 700;
+  color: var(--ink, #28214f);
+}
+
+.ios-install-hint-step-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #5e7df4, #7651d9 55%, #ff7eb5);
+  border-radius: 8px;
+  box-shadow:
+    0 4px 10px rgba(118, 81, 217, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 420px) {
+  .install-banner {
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 8px 12px;
+    padding: 12px;
+  }
+
+  .install-banner-icon {
+    grid-row: 1;
+    grid-column: 1;
+    width: 34px;
+    height: 34px;
+  }
+
+  .install-banner-copy {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .install-banner-dismiss {
+    grid-row: 1;
+    grid-column: 3;
+  }
+
+  .install-banner-cta {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 38px;
+  }
+
+  .install-banner-title {
+    font-size: 13px;
+  }
+
+  .install-banner-desc {
+    font-size: 11.5px;
+  }
+}
+
 /* ========== Smooth mode (perf-friendly) ========== */
 body.smooth-mode .ambient,
 body.smooth-mode .grain {
