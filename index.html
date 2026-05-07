@@ -34,27 +34,14 @@
           </svg>
         </span>
         <div class="brand-copy">
-          <p class="brand-kicker">Premium Suite</p>
           <h1>Downtime <em>Calculator</em></h1>
         </div>
       </div>
     </header>
 
     <main class="content" aria-live="polite">
-      <section class="hero">
-        <p class="hero-eyebrow"><span class="hero-dot"></span>Realtime production insight</p>
-        <h2 class="hero-title">Measure the <em>true cost</em> of every lost minute.</h2>
-        <p class="hero-sub">Pair targets with achievement and runtime to surface a refined downtime estimate &mdash; instantly.</p>
-      </section>
-
       <section class="glass-card input-card" aria-labelledby="calculator-title">
-        <div class="card-intro">
-          <div>
-            <p class="eyebrow">Production Planner</p>
-            <h2 id="calculator-title">Calculate <em>loss time</em></h2>
-          </div>
-          <span class="mini-badge">+30 min fixed</span>
-        </div>
+        <h2 id="calculator-title" class="sr-only">Downtime calculator inputs</h2>
 
         <div class="field-group" data-field="target">
           <label for="target"><span>01</span>Production Target</label>
@@ -121,7 +108,6 @@
             </svg>
           </div>
           <p>Enter values to calculate</p>
-          <small>Your premium downtime estimate will appear here</small>
         </div>
 
         <div class="result-content" id="result-content">
@@ -130,16 +116,8 @@
             <p class="result-value"><span id="result-number">0</span><span class="result-unit">min</span></p>
           </div>
           <p class="formula" id="formula">Runtime - (Achievement/Target × Runtime) + 30</p>
-          <div class="result-meta">
-            <span class="meta-chip"><span class="meta-dot"></span>Live calculation</span>
-            <span class="meta-chip"><span class="meta-dot meta-dot-warm"></span>+30 min buffer</span>
-          </div>
         </div>
       </section>
-
-      <footer class="app-footer">
-        <p>Crafted for shop-floor clarity &middot; <em>premium edition</em></p>
-      </footer>
     </main>
 
     <div class="safe-area" aria-hidden="true"></div>
