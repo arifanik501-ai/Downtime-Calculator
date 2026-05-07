@@ -105,9 +105,11 @@ calculateButton.addEventListener("click", () => {
     resultNumber.textContent = roundedDowntime.toLocaleString();
     formulaText.textContent = `${selectedRuntime} - (${inputs.achievement.toLocaleString()}/${inputs.target.toLocaleString()} × ${selectedRuntime}) + ${FIXED_DOWNTIME}`;
     resultCard.classList.remove("is-empty");
+    resultCard.classList.remove("has-result");
     resultCard.style.animation = "none";
     resultCard.offsetHeight;
     resultCard.style.animation = "";
+    requestAnimationFrame(() => resultCard.classList.add("has-result"));
     setLoading(false);
   }, 420);
 });
