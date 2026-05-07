@@ -5,83 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#e8d5ff">
   <title>Downtime Calculator</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app-shell">
-    <div class="ambient ambient-one" aria-hidden="true"></div>
-    <div class="ambient ambient-two" aria-hidden="true"></div>
-    <div class="ambient ambient-three" aria-hidden="true"></div>
-
     <header class="app-header">
       <h1>Downtime Calculator</h1>
     </header>
 
     <main class="content" aria-live="polite">
       <section class="glass-card input-card" aria-labelledby="calculator-title">
-        <div class="card-intro">
-          <div>
-            <p class="eyebrow">Production Planner</p>
-            <h2 id="calculator-title">Calculate loss time</h2>
-          </div>
-          <span class="mini-badge">+30 min fixed</span>
-        </div>
+        <h2 id="calculator-title" class="sr-only">Downtime calculator inputs</h2>
 
         <div class="field-group" data-field="target">
-          <label for="target"><span>01</span>Production Target</label>
-          <div class="input-shell">
-            <input id="target" type="number" inputmode="numeric" min="0" step="1" placeholder="Enter target units" autocomplete="off">
-            <span class="input-unit">units</span>
-          </div>
+          <label for="target">Production Target</label>
+          <input id="target" type="number" inputmode="numeric" min="0" step="1" placeholder="Enter target units" autocomplete="off">
           <p class="error-message" id="target-error"></p>
         </div>
 
         <div class="field-group" data-field="achievement">
-          <label for="achievement"><span>02</span>Production Achievement</label>
-          <div class="input-shell">
-            <input id="achievement" type="number" inputmode="numeric" min="0" step="1" placeholder="Enter achieved units" autocomplete="off">
-            <span class="input-unit">units</span>
-          </div>
+          <label for="achievement">Production Achievement</label>
+          <input id="achievement" type="number" inputmode="numeric" min="0" step="1" placeholder="Enter achieved units" autocomplete="off">
           <p class="error-message" id="achievement-error"></p>
         </div>
 
         <div class="field-group runtime-field">
-          <span class="field-label"><span>03</span>Production Runtime</span>
+          <span class="field-label">Production Runtime</span>
           <div class="runtime-options" role="radiogroup" aria-label="Production Runtime">
-            <button class="runtime-pill is-active" type="button" role="radio" aria-checked="true" data-runtime="480"><strong>480</strong><small>min</small></button>
-            <button class="runtime-pill" type="button" role="radio" aria-checked="false" data-runtime="660"><strong>660</strong><small>min</small></button>
-            <button class="runtime-pill" type="button" role="radio" aria-checked="false" data-runtime="780"><strong>780</strong><small>min</small></button>
+            <button class="runtime-pill is-active" type="button" role="radio" aria-checked="true" data-runtime="480">480 min</button>
+            <button class="runtime-pill" type="button" role="radio" aria-checked="false" data-runtime="660">660 min</button>
+            <button class="runtime-pill" type="button" role="radio" aria-checked="false" data-runtime="780">780 min</button>
           </div>
         </div>
 
         <div class="field-group downtime-field">
-          <span class="field-label"><span>04</span>Additional Downtime</span>
-          <div class="fixed-downtime" aria-label="Additional downtime fixed value">
-            <span class="fixed-value">30 min</span>
-            <span class="fixed-caption">Fixed buffer</span>
-          </div>
+          <span class="field-label">Additional Downtime</span>
+          <div class="fixed-downtime" aria-label="Additional downtime fixed value">30 min (Fixed)</div>
         </div>
       </section>
 
       <button class="calculate-button" type="button" id="calculate">
-        <span class="button-shine" aria-hidden="true"></span>
         <span class="button-text">Calculate Downtime</span>
         <span class="spinner" aria-hidden="true"></span>
       </button>
 
       <section class="glass-card result-card is-empty" id="result-card" aria-live="polite">
         <div class="empty-state" id="empty-state">
-          <div class="calculator-icon" aria-hidden="true"><span></span></div>
+          <div class="calculator-icon" aria-hidden="true">⌗</div>
           <p>Enter values to calculate</p>
-          <small>Your premium downtime estimate will appear here</small>
         </div>
 
         <div class="result-content" id="result-content">
           <p class="result-label">Total Downtime</p>
-          <p class="result-value"><span id="result-number">0</span><span>min</span></p>
+          <p class="result-value"><span id="result-number">0</span> min</p>
           <p class="formula" id="formula">Runtime - (Achievement/Target × Runtime) + 30</p>
         </div>
       </section>
