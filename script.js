@@ -7,11 +7,19 @@ const resultCard = document.querySelector("#result-card");
 const resultNumber = document.querySelector("#result-number");
 const formulaText = document.querySelector("#formula");
 const smoothToggle = document.querySelector("#smooth-toggle");
+const installBanner = document.querySelector("#install-banner");
+const installBannerCta = document.querySelector("#install-banner-cta");
+const installBannerDismiss = document.querySelector("#install-banner-dismiss");
+const installBannerDesc = document.querySelector("#install-banner-desc");
+const iosInstallHint = document.querySelector("#ios-install-hint");
+const iosInstallHintClose = document.querySelector("#ios-install-hint-close");
 
 const FIXED_DOWNTIME = 30;
 const SMOOTH_MODE_KEY = "dc-smooth-mode";
+const INSTALL_DISMISSED_KEY = "dc-install-dismissed";
 let selectedRuntime = 480;
 let loadingTimer;
+let deferredInstallPrompt = null;
 
 const setSmoothMode = (enabled, { persist = true } = {}) => {
   document.body.classList.toggle("smooth-mode", enabled);
@@ -52,6 +60,135 @@ const vibrate = (duration = 12) => {
     navigator.vibrate(duration);
   }
 };
+
+// ===== PWA install support =====
+const isStandalone = () =>
+  window.matchMedia?.("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
+
+const isIosSafari = () => {
+  const ua = window.navigator.userAgent || "";
+  const isIos = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isSafari = /^((?!chrome|crios|fxios|edgios|opios).)*safari/i.test(ua);
+  return isIos && isSafari;
+};
+
+const showInstallBanner = (description) => {
+  if (!installBanner) return;
+  if (isStandalone()) return;
+  let dismissed = null;
+  try {
+    dismissed = localStorage.getItem(INSTALL_DISMISSED_KEY);
+  } catch (_error) {
+    dismissed = null;
+  }
+  if (dismissed === "1") return;
+  if (description && installBannerDesc) {
+    installBannerDesc.textContent = description;
+  }
+  installBanner.dataset.state = "visible";
+};
+
+const hideInstallBanner = ({ persist = false } = {}) => {
+  if (!installBanner) return;
+  installBanner.dataset.state = "hidden";
+  if (persist) {
+    try {
+      localStorage.setItem(INSTALL_DISMISSED_KEY, "1");
+    } catch (_error) {
+      // localStorage may be unavailable; fail silently.
+    }
+  }
+};
+
+const showIosInstallHint = () => {
+  if (!iosInstallHint) return;
+  iosInstallHint.dataset.state = "visible";
+};
+
+const hideIosInstallHint = () => {
+  if (!iosInstallHint) return;
+  iosInstallHint.dataset.state = "hidden";
+};
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  showInstallBanner("Add it to your phone for one-tap access.");
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  if (installBanner && installBannerDesc) {
+    installBannerDesc.textContent = "Installed — launch it from your home screen anytime.";
+    installBanner.classList.add("is-success");
+    if (installBannerCta) {
+      installBannerCta.textContent = "Done";
+    }
+  }
+  setTimeout(() => hideInstallBanner({ persist: true }), 2400);
+});
+
+if (installBannerCta) {
+  installBannerCta.addEventListener("click", async () => {
+    vibrate(18);
+    if (deferredInstallPrompt) {
+      const promptEvent = deferredInstallPrompt;
+      deferredInstallPrompt = null;
+      try {
+        promptEvent.prompt();
+        const { outcome } = await promptEvent.userChoice;
+        if (outcome === "accepted") {
+          hideInstallBanner({ persist: true });
+        }
+      } catch (_error) {
+        // If the prompt fails for any reason, fall back to the iOS-style hint.
+        showIosInstallHint();
+      }
+      return;
+    }
+    showIosInstallHint();
+  });
+}
+
+if (installBannerDismiss) {
+  installBannerDismiss.addEventListener("click", () => {
+    hideInstallBanner({ persist: true });
+  });
+}
+
+if (iosInstallHintClose) {
+  iosInstallHintClose.addEventListener("click", hideIosInstallHint);
+}
+
+if (iosInstallHint) {
+  document.addEventListener("click", (event) => {
+    if (iosInstallHint.dataset.state !== "visible") return;
+    if (
+      event.target === iosInstallHint ||
+      iosInstallHint.contains(event.target) ||
+      event.target === installBannerCta
+    ) {
+      return;
+    }
+    hideIosInstallHint();
+  });
+}
+
+if (isIosSafari() && !isStandalone()) {
+  showInstallBanner("On iPhone? Tap Install for the Add to Home Screen steps.");
+}
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("service-worker.js")
+      .catch((error) => {
+        // Service worker registration is optional; surface in console only.
+        console.warn("Service worker registration failed:", error);
+      });
+  });
+}
 
 const setError = (input, message) => {
   const group = input.closest(".field-group");
