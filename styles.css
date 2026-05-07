@@ -175,15 +175,42 @@ button {
 }
 
 .brand-mark {
+  position: relative;
+  isolation: isolate;
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   place-items: center;
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 14px;
-  box-shadow: 0 10px 24px rgba(94, 76, 166, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow:
+    0 14px 30px rgba(118, 81, 217, 0.32),
+    0 4px 10px rgba(94, 76, 166, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
   animation: tilt-mark 5s ease-in-out infinite alternate;
+}
+
+.brand-mark svg {
+  display: block;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+}
+
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 22px;
+  background: radial-gradient(closest-side, rgba(118, 81, 217, 0.35), transparent 70%);
+  filter: blur(14px);
+  opacity: 0.7;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.brand-mark-needle {
+  transform-origin: 32px 36px;
+  animation: needle-sweep 6s ease-in-out infinite;
 }
 
 .brand-copy {
@@ -797,6 +824,18 @@ input:focus {
   }
   50% {
     transform: rotate(4deg);
+  }
+}
+
+@keyframes needle-sweep {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(28deg);
+  }
+  65% {
+    transform: rotate(-12deg);
   }
 }
 
